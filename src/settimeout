@@ -1,0 +1,72 @@
+import React, { useState } from 'react'
+import { useNavigate } from 'react-router-dom';
+
+export default function NewHotel() {
+  const [name, setname] = useState("");
+  const [hostname, sethostname] = useState("");
+  const [location, setlocation] = useState("");
+  const [price, setprice] = useState("");
+  const [minimum_nights, setminimum_nights] = useState("");
+
+  const navigate=useNavigate();
+  const handleSubmit=(e)=>  {
+    e.preventDefault()
+
+    fetch("https://nodejs.sulla.hu/data",{
+method:"POST",
+headers:{
+  "Content-Type" : "application/json ; charset=UTF-8"
+
+},
+body:JSON.stringify({
+  name:name,
+  hostname:hostname,
+  location:location,
+  price:price,
+  minimum_nights:minimum_nights
+}),
+    })
+    .then((data) => {
+      console.log("Siker:", data);
+      alert("Sikeres adatfelvitel");
+
+      setTimeout(() => {
+        navigate("/");
+      }, 2000);
+    })
+    .catch((err) => console.error(err));
+};
+
+  return (
+    <div>
+<form onSubmit={handleSubmit}>
+  <div class="mb-3">
+    <label for="exampleInputEmail1" class="form-label">Név</label>
+    <input type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" value={name} onChange={(e)=> setname (e.target.value)} required/>
+    
+  </div>
+  <div class="mb-3">
+    <label for="exampleInputEmail1" class="form-label">Hostnév</label>
+    <input type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" value={hostname} onChange={(e)=> sethostname (e.target.value)} required/>
+    
+  </div>
+ <div class="mb-3">
+    <label for="exampleInputEmail1" class="form-label">Név</label>
+    <input type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" value={location} onChange={(e)=> setlocation (e.target.value)} required/>
+    
+  </div>
+  <div class="mb-3">
+    <label for="exampleInputEmail1" class="form-label">Név</label>
+    <input type="number" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" value={price} onChange={(e)=> setprice (e.target.value)} required/>
+    
+  </div>
+  <div class="mb-3">
+    <label for="exampleInputEmail1" class="form-label">Név</label>
+    <input type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" value={minimum_nights} onChange={(e)=> setminimum_nights (e.target.value)} required/>
+    
+  </div>
+  <button type="submit" class="btn btn-primary">Submit</button>
+</form>
+    </div>
+  )
+}
